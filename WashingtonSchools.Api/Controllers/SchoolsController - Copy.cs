@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WashingtonSchools.Api.Models;
 
-namespace WashingtonSchools.Api.Controllers.V2
+namespace WashingtonSchools.Api.Controllers.V1
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ApiVersion("2.0")]
+    [ApiVersion("1.0")]
     public class SchoolsController : ControllerBase
     {
         private readonly WSDbContext _context;
@@ -24,7 +24,6 @@ namespace WashingtonSchools.Api.Controllers.V2
 
         // GET: api/Schools
         [HttpGet]
-        [EnableQuery()]
         public IEnumerable<School> GetSchools()
         {
             return _context.Schools;

@@ -12,6 +12,7 @@ namespace WashingtonSchools.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class StudentsController : ControllerBase
     {
         private readonly WSDbContext _context;

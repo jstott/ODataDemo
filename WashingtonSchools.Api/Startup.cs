@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +29,12 @@ namespace WashingtonSchools.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=WSDB;Trusted_Connection=True;ConnectRetryCount=0";
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
+            services.AddApiVersioning(o => {
+                o.ReportApiVersions = true;
+                o.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            });
+            var connection = @"Server=localhost;Database=WSDB;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<WSDbContext>(options => options.UseSqlServer(connection));
             services.AddOData();
         }
@@ -52,6 +57,7 @@ namespace WashingtonSchools.Api
                 routeBuilder.EnableDependencyInjection();
                 routeBuilder.Expand().Select().Count().OrderBy().Filter();
             });
+            app.UseApiVersioning();
         }
     }
 }
