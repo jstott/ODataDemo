@@ -28,6 +28,27 @@ Hassan Habib (04/02/2019)
 @Martin Spasiuk I'm working with the OData team to get this officially released - should be out officially shortly.﻿
 
 ```
+
+### Swagger Error 
+The error you'll see navigating to `/swagger` :
+```
+fail: Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware[1]
+      An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: No media types found in 'Microsoft.AspNet.OData.Formatter.ODataOutputFormatter.SupportedMediaTypes'. Add at least one media type to the list of supported media types.
+   at Microsoft.AspNetCore.Mvc.Formatters.OutputFormatter.GetSupportedContentTypes(String contentType, Type objectType)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseTypeProvider.CalculateResponseFormats(ICollection`1 responseTypes, MediaTypeCollection declaredContentTypes)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseTypeProvider.GetApiResponseTypes(IReadOnlyList`1 responseMetadataAttributes, Type type, Type defaultErrorType)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiResponseTypeProvider.GetApiResponseTypes(ControllerActionDescriptor action)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.DefaultApiDescriptionProvider.CreateApiDescription(ControllerActionDescriptor action, String httpMethod, String groupName)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.DefaultApiDescriptionProvider.OnProvidersExecuting(ApiDescriptionProviderContext context)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollectionProvider.GetCollection(ActionDescriptorCollection actionDescriptors)
+   at Microsoft.AspNetCore.Mvc.ApiExplorer.ApiDescriptionGroupCollectionProvider.get_ApiDescriptionGroups()
+   at NSwag.AspNetCore.Middlewares.SwaggerDocumentMiddleware.GenerateSwaggerAsync(HttpContext context)
+   at NSwag.AspNetCore.Middlewares.SwaggerDocumentMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
+info: Microsoft.AspNetCore.Hosting.Internal.WebHost[2]
+      Request finished in 60.0815ms 500 text/html; charset=utf-8
+```
 ## For API Versioning
 
 * Add nuget package `Microsoft.AspNetCore.Mvc.Versioning`

@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Extensions;
+﻿using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using NJsonSchema;
+using NSwag.AspNetCore;
+using System.Linq;
 using WashingtonSchools.Api.Models;
 
 namespace WashingtonSchools.Api
@@ -30,13 +26,16 @@ namespace WashingtonSchools.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
-            services.AddApiVersioning(o => {
+            services.AddApiVersioning(o =>
+            {
                 o.ReportApiVersions = true;
                 o.ApiVersionReader = new HeaderApiVersionReader("api-version");
             });
             var connection = @"Server=localhost;Database=WSDB;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<WSDbContext>(options => options.UseSqlServer(connection));
             services.AddOData();
+
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,12 +51,18 @@ namespace WashingtonSchools.Api
             }
 
             app.UseHttpsRedirection();
+            // Enable middleware to serve swagger-ui(HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwagger();
+            app.UseSwaggerUi3();
             app.UseMvc(routeBuilder =>
             {
                 routeBuilder.EnableDependencyInjection();
                 routeBuilder.Expand().Select().Count().OrderBy().Filter();
             });
             app.UseApiVersioning();
+
+
         }
     }
 }
